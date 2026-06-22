@@ -6,7 +6,7 @@
     <title>Surprise Buat Cece Sayang 💙</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Poppins:wght@400;600;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
-    <!-- Swiper CSS (Buat efek geser foto) -->
+    <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
     <style>
@@ -25,7 +25,7 @@
             font-family: 'Poppins', sans-serif;
             height: 100vh;
             width: 100vw;
-            touch-action: none; /* Mencegah pull-to-refresh di HP */
+            touch-action: none;
         }
 
         /* --- SCREEN 0: START --- */
@@ -329,16 +329,15 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
-        // DOM Elements
         const audioTegang = document.getElementById('bgm-tegang');
         const audioRomantis = document.getElementById('bgm-romantis');
 
-        // URL Animasi Doraemon
-        const doraKetawa = 'https://media.tenor.com/8Q_Zl-Q9_UAAAAAi/doraemon-laugh.gif';
-        const doraMinum = 'https://media.tenor.com/qL0_wP3FpA4AAAAi/doraemon-tea.gif';
-        const doraHappy = 'https://media.tenor.com/5O0vN5HmbBwAAAAi/doraemon-happy.gif';
-        const doraNunjuk = 'https://media.tenor.com/1G86oM2N2aQAAAAi/doraemon.gif';
-        const doraLove = 'https://media.tenor.com/NnE1W7n1bM0AAAAi/doraemon-love.gif';
+        // URL Animasi Doraemon yang sudah diperbaiki jadi raw image (100% work)
+        const doraKetawa = 'https://c.tenor.com/8Q_Zl-Q9_UAAAAAC/tenor.gif';
+        const doraMinum = 'https://c.tenor.com/qL0_wP3FpA4AAAAC/tenor.gif';
+        const doraHappy = 'https://c.tenor.com/5O0vN5HmbBwAAAAC/tenor.gif';
+        const doraNunjuk = 'https://c.tenor.com/1G86oM2N2aQAAAAC/tenor.gif';
+        const doraLove = 'https://c.tenor.com/NnE1W7n1bM0AAAAC/tenor.gif';
 
         // FLOW DATA DENGAN MASCOT DORAEMON
         const flowData = [
@@ -382,7 +381,6 @@
 
         let currentStep = 0;
 
-        // 1. START SYSTEM
         function startSystem() {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('hacker-screen').style.display = 'flex';
@@ -401,7 +399,6 @@
             }, 50);
         }
 
-        // 2. CHECK PASSWORD
         function checkPassword() {
             let val = document.getElementById('pass-input').value.toUpperCase();
             if(val === 'YNAXCECE') {
@@ -425,7 +422,6 @@
             }
         }
 
-        // 3. MINIGAME KADO
         function masukMinigame() {
             document.getElementById('hacker-screen').style.display = 'none';
             document.getElementById('interactive-screen').style.display = 'flex';
@@ -443,15 +439,12 @@
             const inst = document.getElementById('game-inst');
 
             let isCut = false;
-            let startX, startY, initX, initY;
+            let startX, startY;
 
-            // DRAG PISAU
             knife.addEventListener('touchstart', (e) => {
                 let touch = e.touches[0];
                 startX = touch.clientX; startY = touch.clientY;
-                let rect = knife.getBoundingClientRect();
-                initX = rect.left; initY = rect.top;
-                knife.style.animation = 'none'; // stop float
+                knife.style.animation = 'none'; 
             });
 
             knife.addEventListener('touchmove', (e) => {
@@ -461,7 +454,6 @@
                 let dy = touch.clientY - startY;
                 knife.style.transform = `translate(${dx}px, ${dy}px)`;
 
-                // Cek tabrakan sama tali
                 let kRect = knife.getBoundingClientRect();
                 let rRect = rope.getBoundingClientRect();
 
@@ -472,16 +464,15 @@
                     rope.style.display = 'none';
                     knife.style.display = 'none';
                     wrapper.style.animation = 'none';
-                    wrapper.style.transform = 'translateY(30vh)'; // Jatuh
+                    wrapper.style.transform = 'translateY(30vh)';
                     
                     setTimeout(() => {
                         inst.innerHTML = "Yeay kepotong! Sekarang <b>Seret/Swipe tutup kadonya ke atas</b> ayang! 👆";
-                        wrapper.style.transform = 'translateY(28vh)'; // Mantul dikit
+                        wrapper.style.transform = 'translateY(28vh)';
                     }, 500);
                 }
             });
 
-            // DRAG TUTUP KADO
             let lidStartY = 0;
             lid.addEventListener('touchstart', (e) => {
                 if(!isCut) return;
@@ -490,9 +481,9 @@
             lid.addEventListener('touchmove', (e) => {
                 if(!isCut) return;
                 let dy = e.touches[0].clientY - lidStartY;
-                if(dy < 0) { // geser ke atas
+                if(dy < 0) { 
                     lid.style.transform = `translateY(${dy}px)`;
-                    if(dy < -100) { // Kebuka!
+                    if(dy < -100) { 
                         document.getElementById('interactive-screen').style.display = 'none';
                         document.getElementById('main-screen').style.display = 'flex';
                         renderFlow();
@@ -501,19 +492,19 @@
             });
         }
 
-        // 4. MAIN SEQUENCE RENDER (DENGAN DORAEMON)
         function renderFlow() {
             let box = document.getElementById('content-box');
             let btn = document.getElementById('btn-next');
-            box.innerHTML = ''; // Clear
+            box.innerHTML = ''; 
 
             let data = flowData[currentStep];
 
-            // Render Mascot Doraemon kalo ada
             if(data.doraemon) {
                 let dora = document.createElement('img');
                 dora.src = data.doraemon;
                 dora.className = 'doraemon-mascot';
+                // Pengaman misal link lelet
+                dora.onerror = function() { this.style.display = 'none'; };
                 box.appendChild(dora);
             }
 
@@ -544,14 +535,12 @@
                 sliderContainer.innerHTML = swiperHTML;
                 box.appendChild(sliderContainer);
                 
-                // Init Swiper
                 new Swiper(".mySwiper", {
                     effect: "cards",
                     grabCursor: true,
                 });
             }
 
-            // Hide button at the end
             if(currentStep === flowData.length - 1) {
                 btn.style.display = 'none';
             }
@@ -564,10 +553,8 @@
             }
         }
 
-        // 5. PARTICLES (BINTANG & KUPU KUPU)
         function createParticles() {
             const body = document.body;
-            // Bintang
             for(let i=0; i<60; i++){
                 let star = document.createElement('div');
                 star.className = 'star';
@@ -579,7 +566,6 @@
                 star.style.animationDelay = Math.random()*2+'s';
                 body.appendChild(star);
             }
-            // Kupu-kupu
             for(let i=0; i<12; i++){
                 let bf = document.createElement('div');
                 bf.className = 'butterfly'; bf.innerHTML = '🦋';
