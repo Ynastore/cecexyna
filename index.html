@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Surprise Buat Cece Sayang 💙</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Poppins:wght@400;600;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            touch-action: none; /* Mencegah pull-to-refresh di HP */
+        }
+
+        /* --- SCREEN 0: START --- */
+        #start-screen {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            background: #000;
+        }
+        .start-btn {
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(45deg, #0051ff, #00d4ff);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+            animation: pulse-btn 1.5s infinite;
+        }
+
+        /* --- SCREEN 1: HACKER PRANK --- */
+        #hacker-screen {
+            display: none;
+            width: 100%; height: 100%;
+            background-color: #030303;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier Prime', monospace;
+            padding: 20px;
+            text-align: center;
+            z-index: 50;
+            position: relative;
+        }
+        .hacker-text {
+            color: #00d4ff;
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00d4ff;
+            min-height: 80px;
+        }
+        .scanline {
+            width: 100%; height: 100px;
+            background: linear-gradient(0deg, rgba(0,212,255,0) 0%, rgba(0,212,255,0.2) 50%, rgba(0,212,255,0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 3s linear infinite;
+            pointer-events: none;
+        }
+        #password-box {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        #pass-input {
+            background: rgba(0, 81, 255, 0.1);
+            border: 2px solid #0051ff;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 18px;
+            text-align: center;
+            outline: none;
+            border-radius: 10px;
+            font-family: 'Courier Prime', monospace;
+            text-transform: uppercase;
+            box-shadow: inset 0 0 10px rgba(0, 81, 255, 0.5);
+        }
+        .submit-btn {
+            background: #0051ff;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 15px #0051ff;
+        }
+
+        /* --- SCREEN 2: INTERACTIVE GIFT --- */
+        #interactive-screen {
+            display: none;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at top, #0a1128 0%, #000000 100%);
+            position: absolute;
+            z-index: 40;
+            flex-direction: column;
+            align-items: center;
+        }
+        .instruction-text {
+            margin-top: 50px;
+            font-size: 20px;
+            color: #00d4ff;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 0 10px #00d4ff;
+            animation: pulse-btn 2s infinite;
+            padding: 0 20px;
+        }
+        #rope {
+            width: 4px;
+            height: 150px;
+            background: #8b5a2b;
+            position: relative;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+        }
+        #gift-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-origin: top center;
+            animation: swing 3s ease-in-out infinite;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .gift-part {
+            font-size: 120px;
+            line-height: 1;
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.5));
+            position: absolute;
+        }
+        #gift-lid {
+            top: -20px;
+            z-index: 2;
+            cursor: grab;
+            transition: transform 0.1s;
+        }
+        #gift-body {
+            top: 40px;
+            z-index: 1;
+        }
+        #knife {
+            position: absolute;
+            right: 20px;
+            top: 250px;
+            font-size: 60px;
+            cursor: grab;
+            filter: drop-shadow(0 0 10px #fff);
+            animation: float 2s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        /* --- SCREEN 3: MAIN SEQUENCE --- */
+        #main-screen {
+            display: none;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #051937, #000000);
+            position: absolute;
+            z-index: 30;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Particles */
+        .star { position: absolute; background: #fff; border-radius: 50%; box-shadow: 0 0 15px #fff; animation: twinkle linear infinite; }
+        .butterfly { position: absolute; font-size: 25px; filter: drop-shadow(0 0 10px #00d4ff); animation: floatUp linear infinite; opacity: 0.8; }
+
+        /* Sequence Content */
+        #content-box {
+            width: 90%; max-width: 450px;
+            text-align: center;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .seq-text {
+            font-size: 22px;
+            line-height: 1.5;
+            color: #e0f7fa;
+            text-shadow: 0 2px 10px rgba(0, 212, 255, 0.5);
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            margin-bottom: 20px;
+        }
+        .seq-text.cute { font-family: 'Caveat', cursive; font-size: 35px; color: #00d4ff; }
+        
+        .photo-container {
+            position: relative;
+            margin-bottom: 25px;
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .seq-img {
+            width: 250px;
+            height: 350px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid #0051ff;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
+            animation: float 4s ease-in-out infinite;
+        }
+        .photo-caption {
+            margin-top: 15px;
+            font-family: 'Caveat', cursive;
+            font-size: 26px;
+            color: #ffb3d9;
+            text-shadow: 0 2px 5px rgba(255, 179, 217, 0.5);
+        }
+
+        /* Swiper Carousel */
+        .swiper {
+            width: 280px;
+            height: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.6);
+            animation: popIn 0.8s forwards;
+            border: 4px solid #00d4ff;
+        }
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .next-btn {
+            background: linear-gradient(45deg, #0051ff, #00d4ff);
+            border: none; padding: 15px 40px; border-radius: 50px;
+            color: white; font-size: 18px; font-weight: bold;
+            cursor: pointer; box-shadow: 0 5px 20px rgba(0, 212, 255, 0.5);
+            font-family: 'Poppins', sans-serif;
+            animation: pulse-btn 2s infinite;
+            margin-top: 20px;
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes pulse-btn { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
+        @keyframes swing { 0% { transform: rotate(5deg); } 50% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(1) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-10vh) scale(1.5) rotate(20deg); opacity: 0; } }
+        @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.2); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.5) translateY(50px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <audio id="bgm-tegang" src="https://files.catbox.moe/p77s9o.mp3" loop></audio>
+    <audio id="bgm-romantis" src="https://files.catbox.moe/xnybvu.mp3" loop></audio>
+
+    <div id="start-screen">
+        <button class="start-btn" onclick="startSystem()">NYALAIN DULU SAYANG 💙</button>
+    </div>
+
+    <div id="hacker-screen">
+        <div class="scanline"></div>
+        <div id="typed-text" class="hacker-text"></div>
+        <div id="password-box">
+            <input type="text" id="pass-input" placeholder="Password..." autocomplete="off">
+            <button class="submit-btn" onclick="checkPassword()">UNLOCK</button>
+            <p id="error-msg" style="color: #ff0055; font-size: 14px; display: none;">ACCESS DENIED! PASSWORD SALAH!</p>
+        </div>
+    </div>
+
+    <div id="interactive-screen">
+        <div class="instruction-text" id="game-inst">Ayang, ambil pisau di kanan terus geser ke tali buat motong ya! 🔪</div>
+        <div id="rope"></div>
+        <div id="gift-wrapper">
+            <div class="gift-part" id="gift-lid">🎀</div>
+            <div class="gift-part" id="gift-body">🎁</div>
+        </div>
+        <div id="knife">🔪</div>
+    </div>
+
+    <div id="main-screen">
+        <div id="content-box"></div>
+        <button class="next-btn" id="btn-next" onclick="nextFlow()">Lanjut Ayang ➔</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        // DOM Elements
+        const audioTegang = document.getElementById('bgm-tegang');
+        const audioRomantis = document.getElementById('bgm-romantis');
+
+        // FLOW DATA
+        const flowData = [
+            { type: 'text', text: 'Ehehehe... kaget ya ayang? 😜' },
+            { type: 'text', text: 'Maaf yaa dibikin jantungan dikit di awal wkwk, sengaja biar seru mwehehe.' },
+            { type: 'text', text: 'Btw sayang...', class: 'cute' },
+            { type: 'text', text: '🎉 HAPPY BIRTHDAY CECEEE (SITI MUHAYA) YANG KE-20!! 🎂💙' },
+            { type: 'text', text: 'Cieee yang umurnya udah kepala 2 nih yeee, udah makin dewasa, makin pinter, makin cakep aja pacarku ini 😝' },
+            { type: 'text', text: 'Di hari spesial kamu ini, aku cuma mau sampein rasa syukur aku...' },
+            { type: 'text', text: 'Makasih banyak ya ayang, udah selalu rawat aku, selalu jagain aku.' },
+            { type: 'text', text: 'Makasih udah selalu perhatian, selalu sabar ngadepin aku.' },
+            { type: 'text', text: 'Dan yang paling penting... Makasih udah ngasih aku CINTA YANG SEBENARNYA, full 100% buat aku. 🥺💙' },
+            { type: 'text', text: 'Aku harap rasa full ini bakal terus ada sampe nanti kita menua bareng ya. Aamiin 🤲' },
+            { type: 'text', text: 'Sekarang, coba liat bidadari cantik yang satu ini deh...' },
+            // FOTO SOLO + CAPTION
+            { type: 'photo', img: 'https://files.catbox.moe/j80zjy.jpg', caption: 'MasyaAllah cantik bet sih si imut pendek ini 😍' },
+            { type: 'photo', img: 'https://files.catbox.moe/6n1arb.jpg', caption: 'Cantik kan botol yakult aku? Mwehehe 🍼💙' },
+            { type: 'photo', img: 'https://files.catbox.moe/4j8z1v.jpg', caption: 'Duh senyumnya bikin diabetes dehhh 🍬' },
+            { type: 'photo', img: 'https://files.catbox.moe/4697t8.jpg', caption: 'Bidadari turun dari kayangan nih bos! ✨' },
+            { type: 'photo', img: 'https://files.catbox.moe/crim7z.jpg', caption: 'Sayangku cintaku maniskuuu pokoknya 💙' },
+            { type: 'text', text: 'Bener-bener gak nyangka bisa dapetin cewek secantik dan sebaik kamu.' },
+            { type: 'text', text: 'Sekarang, coba ayang geser-geser foto di bawah ini deh pake jari yang manis kamu sayang. Liat betapa uwunya kita berdua 👇' },
+            // SWIPER FOTO BERSAMA
+            { type: 'slider', images: [
+                'https://files.catbox.moe/cy7dhf.jpg',
+                'https://files.catbox.moe/wj5n5a.jpg',
+                'https://files.catbox.moe/xfoj2y.jpg',
+                'https://files.catbox.moe/macowo.jpg',
+                'https://files.catbox.moe/391vfx.jpg'
+            ]},
+            { type: 'text', text: 'Lucu banget kan kita? Gemes parah wkwk 😆' },
+            { type: 'text', text: 'Sekali lagi, Happy 20th Birthday, sayangku. Semoga apa yang ayang semogakan tersemogakan.' },
+            { type: 'text', text: 'Tetep jadi Cece yang ceria, baik hati, dan sayang sama aku ya.' },
+            { type: 'text', text: 'I love you to the moon and back, Cece! 💙✨' },
+            { type: 'text', text: '~ Dari cowokmu yang paling lucu:<br>TABAYYUNA (YNA) - CEO YNA STORE 🗿', class: 'cute' }
+        ];
+
+        let currentStep = 0;
+
+        // 1. START SYSTEM
+        function startSystem() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('hacker-screen').style.display = 'flex';
+            audioTegang.play();
+
+            const text = "> PERANGKAT TELAH DI RETAS OLEH YNA DEVELOPER...\n> SILAHKAN MASUKAN PASSWORD UNTUK MEMBUKANYA.";
+            let i = 0; let tgt = document.getElementById('typed-text');
+            let typing = setInterval(() => {
+                if(i < text.length) {
+                    tgt.innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                    setTimeout(() => document.getElementById('password-box').style.display = 'flex', 500);
+                }
+            }, 50);
+        }
+
+        // 2. CHECK PASSWORD
+        function checkPassword() {
+            let val = document.getElementById('pass-input').value.toUpperCase();
+            if(val === 'YNAXCECE') {
+                document.getElementById('error-msg').style.display = 'none';
+                document.getElementById('password-box').style.display = 'none';
+                let tgt = document.getElementById('typed-text'); tgt.innerHTML = '';
+                
+                const successText = "> PASSWORD DITERIMA.\n> BARU DEH PERANGKAT KAMU TERBUKA KEMBALI... 🗿";
+                let i = 0;
+                let typing = setInterval(() => {
+                    if(i < successText.length) {
+                        tgt.innerHTML += successText.charAt(i) === '\n' ? '<br>' : successText.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(typing);
+                        setTimeout(masukMinigame, 2000);
+                    }
+                }, 50);
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        // 3. MINIGAME KADO
+        function masukMinigame() {
+            document.getElementById('hacker-screen').style.display = 'none';
+            document.getElementById('interactive-screen').style.display = 'flex';
+            audioTegang.pause();
+            audioRomantis.play();
+            createParticles();
+            setupMinigame();
+        }
+
+        function setupMinigame() {
+            const knife = document.getElementById('knife');
+            const rope = document.getElementById('rope');
+            const wrapper = document.getElementById('gift-wrapper');
+            const lid = document.getElementById('gift-lid');
+            const inst = document.getElementById('game-inst');
+
+            let isCut = false;
+            let startX, startY, initX, initY;
+
+            // DRAG PISAU
+            knife.addEventListener('touchstart', (e) => {
+                let touch = e.touches[0];
+                startX = touch.clientX; startY = touch.clientY;
+                let rect = knife.getBoundingClientRect();
+                initX = rect.left; initY = rect.top;
+                knife.style.animation = 'none'; // stop float
+            });
+
+            knife.addEventListener('touchmove', (e) => {
+                if(isCut) return;
+                let touch = e.touches[0];
+                let dx = touch.clientX - startX;
+                let dy = touch.clientY - startY;
+                knife.style.transform = `translate(${dx}px, ${dy}px)`;
+
+                // Cek tabrakan sama tali
+                let kRect = knife.getBoundingClientRect();
+                let rRect = rope.getBoundingClientRect();
+
+                if (kRect.left < rRect.right && kRect.right > rRect.left &&
+                    kRect.top < rRect.bottom && kRect.bottom > rRect.top) {
+                    
+                    isCut = true;
+                    rope.style.display = 'none';
+                    knife.style.display = 'none';
+                    wrapper.style.animation = 'none';
+                    wrapper.style.transform = 'translateY(30vh)'; // Jatuh
+                    
+                    setTimeout(() => {
+                        inst.innerHTML = "Yeay kepotong! Sekarang <b>Seret/Swipe tutup kadonya ke atas</b> ayang! 👆";
+                        wrapper.style.transform = 'translateY(28vh)'; // Mantul dikit
+                    }, 500);
+                }
+            });
+
+            // DRAG TUTUP KADO
+            let lidStartY = 0;
+            lid.addEventListener('touchstart', (e) => {
+                if(!isCut) return;
+                lidStartY = e.touches[0].clientY;
+            });
+            lid.addEventListener('touchmove', (e) => {
+                if(!isCut) return;
+                let dy = e.touches[0].clientY - lidStartY;
+                if(dy < 0) { // geser ke atas
+                    lid.style.transform = `translateY(${dy}px)`;
+                    if(dy < -100) { // Kebuka!
+                        document.getElementById('interactive-screen').style.display = 'none';
+                        document.getElementById('main-screen').style.display = 'flex';
+                        renderFlow();
+                    }
+                }
+            });
+        }
+
+        // 4. MAIN SEQUENCE RENDER
+        function renderFlow() {
+            let box = document.getElementById('content-box');
+            let btn = document.getElementById('btn-next');
+            box.innerHTML = ''; // Clear
+
+            let data = flowData[currentStep];
+
+            if(data.type === 'text') {
+                let p = document.createElement('div');
+                p.className = 'seq-text ' + (data.class || '');
+                p.innerHTML = data.text;
+                box.appendChild(p);
+            } 
+            else if(data.type === 'photo') {
+                let cont = document.createElement('div');
+                cont.className = 'photo-container';
+                cont.innerHTML = `
+                    <img src="${data.img}" class="seq-img">
+                    <div class="photo-caption">${data.caption}</div>
+                `;
+                box.appendChild(cont);
+            }
+            else if(data.type === 'slider') {
+                let swiperHTML = `
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            ${data.images.map(img => `<div class="swiper-slide"><img src="${img}"></div>`).join('')}
+                        </div>
+                    </div>
+                `;
+                box.innerHTML = swiperHTML;
+                
+                // Init Swiper
+                new Swiper(".mySwiper", {
+                    effect: "cards",
+                    grabCursor: true,
+                });
+            }
+
+            // Hide button at the end
+            if(currentStep === flowData.length - 1) {
+                btn.style.display = 'none';
+            }
+        }
+
+        function nextFlow() {
+            if(currentStep < flowData.length - 1) {
+                currentStep++;
+                renderFlow();
+            }
+        }
+
+        // 5. PARTICLES (BINTANG & KUPU KUPU)
+        function createParticles() {
+            const body = document.body;
+            // Bintang
+            for(let i=0; i<60; i++){
+                let star = document.createElement('div');
+                star.className = 'star';
+                let s = Math.random() * 3 + 1;
+                star.style.width = s+'px'; star.style.height = s+'px';
+                star.style.left = Math.random()*100+'vw';
+                star.style.top = Math.random()*100+'vh';
+                star.style.animationDuration = (Math.random()*2+1)+'s';
+                star.style.animationDelay = Math.random()*2+'s';
+                body.appendChild(star);
+            }
+            // Kupu-kupu
+            for(let i=0; i<12; i++){
+                let bf = document.createElement('div');
+                bf.className = 'butterfly'; bf.innerHTML = '🦋';
+                bf.style.left = Math.random()*100+'vw';
+                bf.style.animationDuration = (Math.random()*10+10)+'s';
+                bf.style.animationDelay = Math.random()*5+'s';
+                body.appendChild(bf);
+            }
+        }
+    </script>
+</body>
+</html>
