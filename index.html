@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Surprise Buat Cece Sayang 💙</title>
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Poppins:wght@400;600;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS (Buat efek geser foto) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
     <style>
@@ -200,6 +202,17 @@
             flex-direction: column;
             align-items: center;
         }
+        
+        /* DORAEMON MASCOT */
+        .doraemon-mascot {
+            width: 130px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 5px 15px rgba(0, 212, 255, 0.5));
+            animation: float 3s ease-in-out infinite;
+            z-index: 25;
+        }
+
         .seq-text {
             font-size: 22px;
             line-height: 1.5;
@@ -275,13 +288,16 @@
 </head>
 <body>
 
+    <!-- AUDIOS -->
     <audio id="bgm-tegang" src="https://files.catbox.moe/p77s9o.mp3" loop></audio>
     <audio id="bgm-romantis" src="https://files.catbox.moe/xnybvu.mp3" loop></audio>
 
+    <!-- 0. START SCREEN -->
     <div id="start-screen">
         <button class="start-btn" onclick="startSystem()">NYALAIN DULU SAYANG 💙</button>
     </div>
 
+    <!-- 1. HACKER PRANK -->
     <div id="hacker-screen">
         <div class="scanline"></div>
         <div id="typed-text" class="hacker-text"></div>
@@ -292,6 +308,7 @@
         </div>
     </div>
 
+    <!-- 2. INTERACTIVE MINIGAME -->
     <div id="interactive-screen">
         <div class="instruction-text" id="game-inst">Ayang, ambil pisau di kanan terus geser ke tali buat motong ya! 🔪</div>
         <div id="rope"></div>
@@ -302,11 +319,13 @@
         <div id="knife">🔪</div>
     </div>
 
+    <!-- 3. MAIN SEQUENCE -->
     <div id="main-screen">
         <div id="content-box"></div>
         <button class="next-btn" id="btn-next" onclick="nextFlow()">Lanjut Ayang ➔</button>
     </div>
 
+    <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
@@ -314,27 +333,37 @@
         const audioTegang = document.getElementById('bgm-tegang');
         const audioRomantis = document.getElementById('bgm-romantis');
 
-        // FLOW DATA
+        // URL Animasi Doraemon
+        const doraKetawa = 'https://media.tenor.com/8Q_Zl-Q9_UAAAAAi/doraemon-laugh.gif';
+        const doraMinum = 'https://media.tenor.com/qL0_wP3FpA4AAAAi/doraemon-tea.gif';
+        const doraHappy = 'https://media.tenor.com/5O0vN5HmbBwAAAAi/doraemon-happy.gif';
+        const doraNunjuk = 'https://media.tenor.com/1G86oM2N2aQAAAAi/doraemon.gif';
+        const doraLove = 'https://media.tenor.com/NnE1W7n1bM0AAAAi/doraemon-love.gif';
+
+        // FLOW DATA DENGAN MASCOT DORAEMON
         const flowData = [
-            { type: 'text', text: 'Ehehehe... kaget ya ayang? 😜' },
-            { type: 'text', text: 'Maaf yaa dibikin jantungan dikit di awal wkwk, sengaja biar seru mwehehe.' },
-            { type: 'text', text: 'Btw sayang...', class: 'cute' },
-            { type: 'text', text: '🎉 HAPPY BIRTHDAY CECEEE (SITI MUHAYA) YANG KE-20!! 🎂💙' },
-            { type: 'text', text: 'Cieee yang umurnya udah kepala 2 nih yeee, udah makin dewasa, makin pinter, makin cakep aja pacarku ini 😝' },
-            { type: 'text', text: 'Di hari spesial kamu ini, aku cuma mau sampein rasa syukur aku...' },
-            { type: 'text', text: 'Makasih banyak ya ayang, udah selalu rawat aku, selalu jagain aku.' },
-            { type: 'text', text: 'Makasih udah selalu perhatian, selalu sabar ngadepin aku.' },
-            { type: 'text', text: 'Dan yang paling penting... Makasih udah ngasih aku CINTA YANG SEBENARNYA, full 100% buat aku. 🥺💙' },
-            { type: 'text', text: 'Aku harap rasa full ini bakal terus ada sampe nanti kita menua bareng ya. Aamiin 🤲' },
-            { type: 'text', text: 'Sekarang, coba liat bidadari cantik yang satu ini deh...' },
-            // FOTO SOLO + CAPTION
-            { type: 'photo', img: 'https://files.catbox.moe/j80zjy.jpg', caption: 'MasyaAllah cantik bet sih si imut pendek ini 😍' },
-            { type: 'photo', img: 'https://files.catbox.moe/6n1arb.jpg', caption: 'Cantik kan botol yakult aku? Mwehehe 🍼💙' },
-            { type: 'photo', img: 'https://files.catbox.moe/4j8z1v.jpg', caption: 'Duh senyumnya bikin diabetes dehhh 🍬' },
-            { type: 'photo', img: 'https://files.catbox.moe/4697t8.jpg', caption: 'Bidadari turun dari kayangan nih bos! ✨' },
-            { type: 'photo', img: 'https://files.catbox.moe/crim7z.jpg', caption: 'Sayangku cintaku maniskuuu pokoknya 💙' },
-            { type: 'text', text: 'Bener-bener gak nyangka bisa dapetin cewek secantik dan sebaik kamu.' },
-            { type: 'text', text: 'Sekarang, coba ayang geser-geser foto di bawah ini deh pake jari yang manis kamu sayang. Liat betapa uwunya kita berdua 👇' },
+            { type: 'text', text: 'Ehehehe... kaget ya ayang? 😜', doraemon: doraKetawa },
+            { type: 'text', text: 'Maaf yaa dibikin jantungan dikit di awal wkwk, sengaja biar seru mwehehe.', doraemon: doraMinum },
+            { type: 'text', text: 'Btw sayang...', class: 'cute', doraemon: doraMinum },
+            { type: 'text', text: '🎉 HAPPY BIRTHDAY CECEEE (SITI MUHAYA) YANG KE-20!! 🎂💙', doraemon: doraHappy },
+            { type: 'text', text: 'Cieee yang umurnya udah kepala 2 nih yeee, udah makin dewasa, makin pinter, makin cakep aja pacarku ini 😝', doraemon: doraHappy },
+            { type: 'text', text: 'Di hari spesial kamu ini, aku cuma mau sampein rasa syukur aku...', doraemon: doraMinum },
+            { type: 'text', text: 'Makasih banyak ya ayang, udah selalu rawat aku, selalu jagain aku.', doraemon: doraMinum },
+            { type: 'text', text: 'Makasih udah selalu perhatian, selalu sabar ngadepin aku.', doraemon: doraLove },
+            { type: 'text', text: 'Dan yang paling penting... Makasih udah ngasih aku CINTA YANG SEBENARNYA, full 100% buat aku. 🥺💙', doraemon: doraLove },
+            { type: 'text', text: 'Aku harap rasa full ini bakal terus ada sampe nanti kita menua bareng ya. Aamiin 🤲', doraemon: doraHappy },
+            { type: 'text', text: 'Sekarang, coba liat bidadari cantik yang satu ini deh...', doraemon: doraNunjuk },
+            
+            // FOTO SOLO + CAPTION + DORAEMON MATA LOVE
+            { type: 'photo', img: 'https://files.catbox.moe/j80zjy.jpg', caption: 'MasyaAllah cantik bet sih si imut pendek ini 😍', doraemon: doraLove },
+            { type: 'photo', img: 'https://files.catbox.moe/6n1arb.jpg', caption: 'Cantik kan botol yakult aku? Mwehehe 🍼💙', doraemon: doraLove },
+            { type: 'photo', img: 'https://files.catbox.moe/4j8z1v.jpg', caption: 'Duh senyumnya bikin diabetes dehhh 🍬', doraemon: doraLove },
+            { type: 'photo', img: 'https://files.catbox.moe/4697t8.jpg', caption: 'Bidadari turun dari kayangan nih bos! ✨', doraemon: doraLove },
+            { type: 'photo', img: 'https://files.catbox.moe/crim7z.jpg', caption: 'Sayangku cintaku maniskuuu pokoknya 💙', doraemon: doraLove },
+            
+            { type: 'text', text: 'Bener-bener gak nyangka bisa dapetin cewek secantik dan sebaik kamu.', doraemon: doraMinum },
+            { type: 'text', text: 'Sekarang, coba ayang geser-geser foto di bawah ini deh pake jari. Liat betapa uwunya kita berdua 👇', doraemon: doraNunjuk },
+            
             // SWIPER FOTO BERSAMA
             { type: 'slider', images: [
                 'https://files.catbox.moe/cy7dhf.jpg',
@@ -342,12 +371,13 @@
                 'https://files.catbox.moe/xfoj2y.jpg',
                 'https://files.catbox.moe/macowo.jpg',
                 'https://files.catbox.moe/391vfx.jpg'
-            ]},
-            { type: 'text', text: 'Lucu banget kan kita? Gemes parah wkwk 😆' },
-            { type: 'text', text: 'Sekali lagi, Happy 20th Birthday, sayangku. Semoga apa yang ayang semogakan tersemogakan.' },
-            { type: 'text', text: 'Tetep jadi Cece yang ceria, baik hati, dan sayang sama aku ya.' },
-            { type: 'text', text: 'I love you to the moon and back, Cece! 💙✨' },
-            { type: 'text', text: '~ Dari cowokmu yang paling lucu:<br>TABAYYUNA (YNA) - CEO YNA STORE 🗿', class: 'cute' }
+            ], doraemon: doraLove },
+            
+            { type: 'text', text: 'Lucu banget kan kita? Gemes parah wkwk 😆', doraemon: doraKetawa },
+            { type: 'text', text: 'Sekali lagi, Happy 20th Birthday, sayangku. Semoga apa yang ayang semogakan tersemogakan.', doraemon: doraHappy },
+            { type: 'text', text: 'Tetep jadi Cece yang ceria, baik hati, dan sayang sama aku ya.', doraemon: doraMinum },
+            { type: 'text', text: 'I love you to the moon and back, Cece! 💙✨', doraemon: doraLove },
+            { type: 'text', text: '~ Dari cowokmu yang paling kece:<br>TABAYYUNA (YNA) - CEO YNA STORE 😎', class: 'cute', doraemon: doraHappy }
         ];
 
         let currentStep = 0;
@@ -379,7 +409,7 @@
                 document.getElementById('password-box').style.display = 'none';
                 let tgt = document.getElementById('typed-text'); tgt.innerHTML = '';
                 
-                const successText = "> PASSWORD DITERIMA.\n> BARU DEH PERANGKAT KAMU TERBUKA KEMBALI... 🗿";
+                const successText = "> PASSWORD DITERIMA.\n> BARU DEH PERANGKAT KAMU TERBUKA KEMBALI... 😊";
                 let i = 0;
                 let typing = setInterval(() => {
                     if(i < successText.length) {
@@ -471,13 +501,21 @@
             });
         }
 
-        // 4. MAIN SEQUENCE RENDER
+        // 4. MAIN SEQUENCE RENDER (DENGAN DORAEMON)
         function renderFlow() {
             let box = document.getElementById('content-box');
             let btn = document.getElementById('btn-next');
             box.innerHTML = ''; // Clear
 
             let data = flowData[currentStep];
+
+            // Render Mascot Doraemon kalo ada
+            if(data.doraemon) {
+                let dora = document.createElement('img');
+                dora.src = data.doraemon;
+                dora.className = 'doraemon-mascot';
+                box.appendChild(dora);
+            }
 
             if(data.type === 'text') {
                 let p = document.createElement('div');
@@ -502,7 +540,9 @@
                         </div>
                     </div>
                 `;
-                box.innerHTML = swiperHTML;
+                let sliderContainer = document.createElement('div');
+                sliderContainer.innerHTML = swiperHTML;
+                box.appendChild(sliderContainer);
                 
                 // Init Swiper
                 new Swiper(".mySwiper", {
